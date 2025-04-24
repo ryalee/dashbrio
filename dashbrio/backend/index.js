@@ -3,6 +3,8 @@ const cors = require('cors')
 const dotenv = require('dotenv')
 const { createClient } = require('@supabase/supabase-js')
 
+const verifyToken = require('./middlewares/auth')
+
 dotenv.config()
 
 const app = express()
@@ -15,6 +17,13 @@ const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_ANO
 
 app.get('/ping', (req, res) => {
   res.json({ message: 'pong 🏓' })
+})
+
+app.get('/perfil', verifyToken, (req, res) => {
+  res.json({
+    message: 'Autenticado com sucesso',
+    user: req.user,
+  })
 })
 
 app.listen(port, () => {

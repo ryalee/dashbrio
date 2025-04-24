@@ -15,11 +15,11 @@ export default function App() {
       setLoading(false);
     })
 
-    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => {
+    const { subscription } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
-    })
-
-    return () => listener.subscription.unsubscribe();
+    });
+    
+    return () => subscription.unsubscribe();
   }, [])
 
   if(loading) return <p className='text-center mt-10'>Carregando...</p>
